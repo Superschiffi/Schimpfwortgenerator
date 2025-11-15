@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Schimpfwortgenerator</title>
+<style>
+  :root{
+    --bg-top:#5b104d;        /* purple top */
+    --bg-bottom:#541f4e;     /* darker bottom */
+    --machine-gold:#f0c045;  /* main frame */
+    --machine-gold-dark:#c6941e;
+    --reel-bg:#0f1520;       /* dark inner well */
+    --card-bg:#ffffff;
+    --card-shadow: rgba(0,0,0,.35);
+    --label-purple:#8b2bd1;
+    --btn-red:#e45757;
+    --btn-red-dark:#b43f3f;
+    --btn-border:#f1b7b7;
+    --light-on:#f5ce61;
+    --light-off:#d1aa43;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    color:#fff;
+    background: radial-gradient(1200px 800px at 50% 20%, var(--bg-top), var(--bg-bottom) 70%);
+  }
+
+  .wrap{
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 16px;
+  }
+
+  /* top confetti lights */
+  .top-lights{
+    position:absolute;
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:10px;
+    opacity:.9;
+  }
+  .top-lights .dot{
+    width:10px;height:10px;border-radius:50%;
+  }
+  .c1{background:#ffd166}.c2{background:#06d6a0}.c3{background:#118ab2}
+  .c4{background:#ef476f}.c5{background:#f7b801}.c6{background:#9b5de5}
+  .c7{background:#4cc9f0}.c8{background:#f9844a}.c9{background:#2a9d8f}
+  .c10{background:#e76f51}.c11{background:#ffd166}.c12{background:#06d6a0}
+
+  /* slot machine body */
+  .machine{
+    position:relative;
+    text-align: center;
+    width: 310px;
+    border-radius:22px;
+    padding:18px 18px 20px;
+    background: linear-gradient(180deg, var(--machine-gold) 0%, #ffda66 35%, var(--machine-gold) 100%);
+    box-shadow:
+      0 16px 40px rgba(0,0,0,.35),
+      inset 0 2px 0 rgba(255,255,255,.45),
+      inset 0 -2px 0 rgba(0,0,0,.12);
+  }
+  .machine::after{ /* outer border accent */
+    content:"";
+    position:absolute; inset:8px;
+    border-radius:16px;
+    box-shadow: inset 0 0 0 4px rgba(0,0,0,.12);
+    pointer-events:none;
+  }
+
+  /* title badge */
+  .badge{
+    position:absolute; top:-22px; left:50%; transform:translateX(-50%);
+    background: radial-gradient(85px 40px at 50% 30%, #d63a3a, #b22222);
+    color:#ffd57a;
+    font-weight:800;
+    font-size: 1.2rem;
+    letter-spacing:.6px;
+    padding:10px 18px;
+    border-radius:999px;
+    border:4px solid #f0c045;
+    box-shadow: 0 6px 16px rgba(0,0,0,.35);
+    opacity: 1; /* explicitly set to fully opaque */
+    z-index: 10; /* ensure it's on top of other elements */
+  }
+
+  /* inner well (reel window) */
+  .well{
+    background: linear-gradient(180deg, #0d121b, var(--reel-bg));
+    border-radius:18px;
+    padding:16px 0;
+    margin-top:30px;
+    margin-bottom:14px;
+    box-shadow: inset 0 8px 18px rgba(0,0,0,.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* the three “cards” (words) */
+  .reel{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    padding:8px 0 12px;
+  }
+
+  .card{
+    width: 210px;
+    height: 64px;
+    border-radius:12px;
+    background: var(--card-bg);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--label-purple);
+    font-size:28px;
+    font-weight:800;
+    box-shadow:
+      0 8px 16px var(--card-shadow),
+      inset 0 2px 0 rgba(255,255,255,.9);
+    user-select:none;
+  }
+
+  /* button */
+  .btn{
+    width: 210px;
+    margin: 10px auto 2px;
+    background: linear-gradient(180deg, var(--btn-red) 0%, var(--btn-red-dark) 100%);
+    color:white;
+    font-weight:800;
+    font-size: 1.5rem;
+    letter-spacing:.5px;
+    border:none;
+    border-radius:12px;
+    padding:14px 10px;
+    box-shadow:
+      0 8px 20px rgba(180,63,63,.45),
+      inset 0 0 0 3px var(--btn-border);
+    cursor:pointer;
+    transition: transform .06s ease, filter .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{ filter: brightness(1.05); }
+  .btn:active{ transform: translateY(1px) scale(.995); }
+  .btn:disabled{
+    cursor: not-allowed;
+    filter: saturate(.4) brightness(.9);
+    box-shadow: inset 0 0 0 3px #d8b4b4, 0 4px 12px rgba(0,0,0,.25);
+  }
+
+  /* bottom row of bulbs */
+  .bottom-lights{
+    margin-top:10px;
+    display:flex; justify-content:center; gap:10px;
+  }
+  .bulb{
+    width:10px; height:10px; border-radius:50%;
+    background: var(--light-on);
+    box-shadow: 0 0 8px rgba(245,206,97,.9), 0 0 0 2px rgba(0,0,0,.15) inset;
+  }
+  .bulb.dim{
+    background: var(--light-off);
+    box-shadow: 0 0 0 rgba(0,0,0,0), 0 0 0 2px rgba(0,0,0,.12) inset;
+  }
+
+  /* subtle spin animation (optional) */
+  .card.spin {
+    animation: pulse .35s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0% { transform: translateY(0); }
+    50%{ transform: translateY(1px); }
+    100%{ transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+  <!-- decorative top dots -->
+  <div class="top-lights" aria-hidden="true">
+    <div class="dot c1"></div><div class="dot c2"></div><div class="dot c3"></div>
+    <div class="dot c4"></div><div class="dot c5"></div><div class="dot c6"></div>
+    <div class="dot c7"></div><div class="dot c8"></div><div class="dot c9"></div>
+    <div class="dot c10"></div><div class="dot c11"></div><div class="dot c12"></div>
+  </div>
+
+  <div class="wrap">
+    <div class="machine" role="group" aria-label="Word slot machine">
+      <div class="badge" aria-hidden="true">SCHIMPFWORTGENERATOR</div>
+
+      <div class="well">
+        <div class="reel" aria-live="polite">
+          <div class="card" id="slot-0">Oida.</div>
+          <div class="card" id="slot-1">Oida.</div>
+          <div class="card" id="slot-2">Oida.</div>
+        </div>
+      </div>
+
+      <button class="btn" id="spinBtn" type="button">AUF GEHT'S!</button>
+
+      <div class="bottom-lights" aria-hidden="true">
+        <div class="bulb"></div>
+        <div class="bulb"></div>
+        <div class="bulb"></div>
+        <div class="bulb"></div>
+        <div class="bulb dim"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ---- Data ----
+const upperWords  = ['so a', 'absolut', 'unpackbar', 'episch', 'mega','ultra','maximal','heast, du','total','herausragend','selten','extrem','unfassbar','gigantisch','überragend','enorm','legendär','super'];
+const middleWords = ['deppate', 'anghaute', 'gschissene', 'dumme','blöde','blade','analfixierte','schiache','grindige','strunzdumme','fade','gscherde']; // base feminine forms
+const lowerWords  = [
+  ['Tusnelda','f'],
+  ['Würschtel','n'],
+  ['Depp','m'],
+  ['Funzn','f'],
+  ['Armutschkerl','n'],
+  ['Nudlaug','n'],
+  ['Sacklpicker','m'],
+  ['Blunzn','f'],
+  ['Oaschloch','n'],
+  ['Vollhonk','m']
+];
+
+// ---- Slot Machine Logic ----
+const slotEls = [
+  document.getElementById('slot-0'),
+  document.getElementById('slot-1'),
+  document.getElementById('slot-2')
+];
+
+const spinBtn = document.getElementById('spinBtn');
+let spinning = false;
+let tickTimer = null;
+const tickMs = 100;
+const spinDurations = [1500, 2000, 2500];
+
+function randomFrom(list){ return list[Math.floor(Math.random() * list.length)]; }
+
+function setCardSpinningVisual(on){
+  slotEls.forEach(el => el.classList.toggle('spin', on));
+}
+
+function adjustMiddleWord(baseWord, gender){
+  if (gender === 'm') return baseWord.replace(/e$/, '') + 'er'; // e.g., dumme → dummer
+  if (gender === 'n') return baseWord.replace(/e$/, '') + 'es'; // e.g., dumme → dummes
+  return baseWord; // feminine stays as is
+}
+
+function startSpin(){
+  if (spinning) return;
+  spinning = true;
+  spinBtn.disabled = true;
+  spinBtn.textContent = 'SCHAUMAMOI...';
+  setCardSpinningVisual(true);
+
+  tickTimer = setInterval(() => {
+    slotEls[0].textContent = randomFrom(upperWords);
+    slotEls[1].textContent = randomFrom(middleWords);
+    slotEls[2].textContent = randomFrom(lowerWords)[0];
+  }, tickMs);
+
+  setTimeout(() => {
+    // Pick lowerWord first
+    const [lowerWord, gender] = randomFrom(lowerWords);
+    slotEls[2].textContent = lowerWord;
+
+    // Pick middleWord and adjust based on gender
+    const baseMiddle = randomFrom(middleWords);
+    const finalMiddle = adjustMiddleWord(baseMiddle, gender);
+    slotEls[1].textContent = finalMiddle;
+
+    // Pick upperWord
+    slotEls[0].textContent = randomFrom(upperWords);
+
+    clearInterval(tickTimer);
+    setCardSpinningVisual(false);
+    spinning = false;
+    spinBtn.disabled = false;
+    spinBtn.textContent = "AUF GEHT'S!";
+  }, Math.max(...spinDurations));
+}
+
+spinBtn.addEventListener('click', startSpin);
+</script>
+</body>
+</html>
