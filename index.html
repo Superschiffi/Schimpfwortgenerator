@@ -59,7 +59,7 @@
   .machine{
     position:relative;
     text-align: center;
-    width: 310px;
+    width: 330px;
     border-radius:22px;
     padding:18px 18px 20px;
     background: linear-gradient(180deg, var(--machine-gold) 0%, #ffda66 35%, var(--machine-gold) 100%);
@@ -114,7 +114,7 @@
   }
 
   .card{
-    width: 210px;
+    width: 250px;
     height: 64px;
     border-radius:12px;
     background: var(--card-bg);
@@ -217,18 +217,61 @@
 
 <script>
 // ---- Data ----
-const upperWords  = ['so a', 'absolut', 'unpackbar', 'episch', 'mega','ultra','maximal','heast, du','total','herausragend','selten','extrem','unfassbar','gigantisch','überragend','enorm','legendär','super'];
-const middleWords = ['deppate', 'anghaute', 'gschissene', 'dumme','blöde','blade','analfixierte','schiache','grindige','strunzdumme','fade','gscherde']; // base feminine forms
+const upperWords = [
+  'so a', 'absolut', 'unpackbar', 'episch', 'mega', 'ultra', 'maximal', 'heast, du',
+  'total', 'herausragend', 'selten', 'extrem', 'unfassbar', 'gigantisch', 'überragend',
+  'enorm', 'legendär', 'super',  'hyper', 'brutal', 'bombastisch', 'übertrieben', 'wahnsinnig', 'kolossal',
+  'fantastisch', 'irre', 'galaktisch', 'astronomisch','oida, so a', 'monströs', 'ultimativ', 'epochal',
+  'phänomenal', 'unendlich', 'elefantös', 'überwältigend', 'überproportional', 'massiv'];
+const middleWords = ['deppate', 'anghaute', 'gschissene', 'dumme','blöde','blade','analfixierte','schiache','grindige','strunzdumme','fade','gscherde','angrennte','hirnlose','eingebildete','dämliche','oide','stinkate','verlogene','nervige','armselige','sekkante','weltfremde','ungustiöse','vertrottelte','wertlose','unnötige','lästige','alte','dreckige']; // base feminine forms
 const lowerWords  = [
   ['Tusnelda','f'],
   ['Würschtel','n'],
   ['Depp','m'],
+  ['Dillo','m'],
   ['Funzn','f'],
   ['Armutschkerl','n'],
   ['Nudlaug','n'],
   ['Sacklpicker','m'],
   ['Blunzn','f'],
+  ['Brodl','f'],
   ['Oaschloch','n'],
+  ['Ozwickta','m'],
+  ['Aufpudler','m'],
+  ['Bissgurn','f'],
+  ['Sau','f'],
+  ['Schneebrunzer','m'],
+  ['Schwitzer','m'],
+  ['Volldepp','m'],
+  ['Vollgummi','m'],
+  ['Fetzenschädel','m'],
+  ['Dodel','m'],
+  ['Gfrastsackl','n'],
+  ['Grindschlapfn','m'],
+  ['Hascherl','n'],
+  ['Häuslratz','m'],
+  ['Hendl','n'],
+  ['Hiafla','m'],
+  ['Kerzerlschlucker','m'],
+  ['Lulatsch','m'],
+  ['Oarschkretzn','f'],
+  ['Obezahrar','m'],
+  ['Orschwarzn','f'],
+  ['Pfuscher','m'],
+  ['Rotzpippn','f'],
+  ['Sandler','m'],
+  ['Saubartl','n'],
+  ['Schaßtrommel','f'],
+  ['Schmähtandler','m'],
+  ['Suderer','m'],
+  ['Trampel','m'],
+  ['Trutscherl','n'],
+  ['Spinatwachtl','f'],
+  ['Wappler','m'],
+  ['Ungustl','m'],
+  ['Waserl','n'],
+  ['Weh','n'],
+  ['Zniachtl','n'],
   ['Vollhonk','m']
 ];
 
@@ -295,4 +338,3 @@ spinBtn.addEventListener('click', startSpin);
 </script>
 </body>
 </html>
-
